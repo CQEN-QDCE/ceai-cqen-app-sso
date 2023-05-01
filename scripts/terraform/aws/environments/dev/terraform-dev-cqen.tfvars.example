@@ -1,0 +1,7 @@
+# General
+aws_profile           = ""
+aws_region            = "ca-central-1"
+workload_account_type = "Dev"
+system                = "sso"
+environment           = "dev"
+app_name              = "keycloak"
