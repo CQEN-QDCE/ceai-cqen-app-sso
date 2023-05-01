@@ -6,7 +6,7 @@ output "aws_rds_endpoint" {
 }
 
 output "aws_secretsmanager_rds_arn" {
-    value = "${aws_secretsmanager_secret.keycloak_rds_secret.arn}"
+    value = "${aws_secretsmanager_secret.rds_secret.arn}"
     description = "The ARN of RDS secret manager."
 }
 
@@ -15,5 +15,5 @@ output "aws_rds_arn" {
 }
 
 output "aws_rds_name" {
-    value = aws_db_instance.rds.name
+    value = aws_db_instance.rds.db_name
 }

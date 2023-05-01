@@ -4,12 +4,12 @@ locals {
 }
 
 module "ceai_lib" {
-  source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=sea-pipeline"
+  source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=dev"
 }
 
 # network
 module "sea_network" {
-  source = "./.terraform/modules/ceai_lib/aws/sea_network"
+  source = "./.terraform/modules/ceai_lib/aws/sea-network"
 
   aws_profile = var.aws_profile
   workload_account_type = var.workload_account_type  
@@ -21,7 +21,7 @@ module "rds" {
   identifier                                  = local.name
   aws_rds_application                         = var.app_name
   aws_rds_environment                         = var.environment
-  aws_rds_database_subnet_ids                 = var.sea_network.data_subnets.ids
+  aws_rds_database_subnet_ids                 = module.sea_network.data_subnets.ids
   aws_rds_allocated_storage                   = 20
   aws_rds_auto_minor_version_upgrade          = true
   aws_rds_backup_retention_period             = 0
@@ -40,7 +40,7 @@ module "rds" {
   aws_rds_skip_final_snapshot                 = false
   aws_rds_storage_encrypted                   = true
   aws_rds_storage_type                        = "gp2"
-  aws_rds_vpc_security_group_ids              = [var.sea_network.data_security_group.id]
+  aws_rds_vpc_security_group_ids              = [module.sea_network.data_security_group.id] #[var.sea_network.data_security_group.id]
 }
 /*
 module "ecr" {

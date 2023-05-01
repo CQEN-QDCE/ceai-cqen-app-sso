@@ -39,7 +39,7 @@ EOF
 #-------------------------------------------------------------------------------
 # Subnets used by the databases
 resource "aws_db_subnet_group" "db_sn_group" {
-  name        = "${local.database_prefix}-rds-subnet-group"
+  name        = "${local.name}-rds-subnet-group"
   description = "Amazon Relational Database Service (Amazon RDS) subnet group."
   subnet_ids  = var.aws_rds_database_subnet_ids
 }
@@ -67,7 +67,7 @@ resource "aws_db_instance" "rds" {
   storage_type                          = var.aws_rds_storage_type
   username                              = var.aws_rds_db_username
   password                              = "${random_password.db_password.result}"
-  db_subnet_group_name                  = var.aws_db_subnet_group.db_sn_group.name
+  db_subnet_group_name                  = aws_db_subnet_group.db_sn_group.name
   vpc_security_group_ids                = var.aws_rds_vpc_security_group_ids
   kms_key_id                            = data.aws_kms_key.rds.arn
 
