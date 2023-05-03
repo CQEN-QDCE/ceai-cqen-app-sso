@@ -1,0 +1,87 @@
+[
+    {
+      "dnsSearchDomains": null,
+      "environmentFiles": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "secretOptions": null,
+        "options": {
+          "awslogs-group": "${awslogs_group}",
+          "awslogs-region": "${aws_region}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": null,
+      "portMappings": [
+        {
+          "hostPort": ${container_port},
+          "protocol": "tcp",
+          "containerPort": ${container_port}
+        }
+      ],
+      "command": null,
+      "linuxParameters": null,
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "KC_DB_URL",
+          "value": "jdbc:${db_vendor}ql://${db_addr}/${db_name}"
+        },    
+        {     
+          "name": "KC_DB",     
+          "value": "${db_vendor}"      
+        },      
+        {      
+          "name": "JGROUPS_DISCOVERY_PROPERTIES",      
+          "value": "datasource_jndi_name=java:jboss/datasources/KeycloakDS,info_writer_sleep_time=500"     
+        },     
+        {     
+          "name": "JGROUPS_DISCOVERY_PROTOCOL",     
+          "value": "JDBC_PING"     
+        },     
+        {     
+          "name": "KC_PROXY",     
+          "value": "edge"
+        },    
+        {    
+          "name": "KC_HOSTNAME",     
+          "value": "${app_host_name}"     
+        },
+        { 
+           "name": "KC_HTTP_ENABLED",
+           "value": "true"
+        } 
+      ],
+      "secrets": [   
+        {
+           "name": "KEYCLOAK_ADMIN",        
+           "valueFrom": "${app_admin_username}"      
+        },    
+        {       
+           "name": "KEYCLOAK_ADMIN_PASSWORD",       
+           "valueFrom": "${app_admin_password}"       
+        },
+        {       
+           "name": "KC_DB_USERNAME",       
+           "valueFrom": "${db_admin_username}"        
+        },       
+        {       
+           "name": "KC_DB_PASSWORD",       
+           "valueFrom": "${db_admin_password}"       
+        }
+      ],
+      "image": "${app_image}",
+      "healthCheck": {
+        "retries": 5,
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:${container_port}${healthckeck_path} || exit 1"
+        ],
+        "timeout": 15,
+        "interval": 30,
+        "startPeriod": 300
+      },
+      "essential": true,
+      "name": "${container_name}"
+    }
+  ]

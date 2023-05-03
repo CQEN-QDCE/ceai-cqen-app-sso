@@ -1,19 +1,42 @@
 #-------------------------------------------------------------------------------
 # Configure the Amazon Relational Database Service (Amazon RDS) outputs
-output "aws_rds_endpoint" {
+output "endpoint" {
     value = "${aws_db_instance.rds.endpoint}"
-    description = "The private IP address of the main server instance."
+    description = "L'adresse IP de l'instance principale du serveur."
 }
 
-output "aws_secretsmanager_rds_arn" {
-    value = "${aws_secretsmanager_secret.rds_secret.arn}"
-    description = "The ARN of RDS secret manager."
+output "db_name" {
+    value = aws_db_instance.rds.db_name
+    description = "Le nom de la base de données RDS."
+}
+
+output "db_user_secret" {
+    value = "${aws_secretsmanager_secret.rds_secret.arn}:DB_USER::"
+    description = "Référence vers le secret contenant le nom d'usager administrateur de la base de donnée MySQL"
+}
+
+output "db_password_secret" {
+    value = "${aws_secretsmanager_secret.rds_secret.arn}:DB_PASS::"
+    description = "Référence vers le secret contenant le mot de passe administrateur de la base de donnée MySQL"
 }
 
 output "aws_rds_arn" {
     value = aws_db_instance.rds.arn
+    description = "L'ARN du cluster Postgres dans RDS."
 }
 
-output "aws_rds_name" {
-    value = aws_db_instance.rds.db_name
+output "aws_rds_id" {
+    value = aws_db_instance.rds.id
+    description = "Id du cluster Postgres dans RDS"
 }
+
+output "rds_db_pass" {
+    value = "${random_password.db_password.result}"
+    description = "Le mot de passe administrateur de la base de donnée MySQL"
+}
+
+output "rds_db_deploy" {
+    value = "${aws_db_instance.rds}"
+    description = "La ressource aws pour voir si l'instance mysql est bien déployée"
+}
+

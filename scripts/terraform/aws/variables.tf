@@ -28,3 +28,8 @@ variable "app_name" {
   type = string
   description = "Nom de l'application."
 }
+
+variable "app_hostname" {
+  type = string
+  description = "Nom du host de l'application."
+}

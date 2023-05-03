@@ -11,13 +11,13 @@ variable "identifier" {
 
 variable "aws_rds_application" {
     type        = string
-    description = "The application's name."
+    description = "Le nom de l'application."
     sensitive   = false
 }
 
 variable "aws_rds_environment" {
     type        = string
-    description = "The deployment environment (dev, prod). Default = \"dev\"."
+    description = "L'environnement de déploiement (dev, prod). Défaut = \"dev\"."
     sensitive   = false
     default     = "dev"
 }
@@ -26,7 +26,7 @@ variable "aws_rds_environment" {
 # Subnet groups
 variable "aws_rds_database_subnet_ids" {
     type        = list(string)
-    description = "A list of VPC subnet IDs."
+    description = "La liste des IDs des subnetsA du VPC."
     sensitive   = false
 }
 
@@ -34,113 +34,113 @@ variable "aws_rds_database_subnet_ids" {
 # Database instance
 variable "aws_rds_allocated_storage" {
     type        = number
-    description = "The allocated storage in gigabytes"
+    description = "Le stockage assigné en gigabytes"
     sensitive   = false
 }
 
 variable "aws_rds_auto_minor_version_upgrade" {
     type        = bool
-    description = "Indicates that major version upgrades are allowed."
+    description = "Indique que la mise à jour de versions plus récentes est permise."
     sensitive   = false
 }
 
 variable "aws_rds_backup_retention_period" {
     type        = number
-    description = "The days to retain backups for. Must be between 0 and 35."    
+    description = "La période de rétention du backup en jours (entre 0 et 35)."    
     sensitive   = false
 }
 
 variable "aws_rds_cloudwatch_logs" {
   type        = list(string)
-  description = "Set of log types to enable for exporting to CloudWatch logs."
+  description = "Ensemble de type de logs pour exporter vers les logs CloudWatch."
   sensitive   = false
 }
 
 variable "aws_rds_engine" {
     type        = string
-    description = "The database engine to use."    
+    description = "Le moteur de base de données à utiliser."    
     sensitive   = false
 }
 
 variable "aws_rds_engine_version" {
     type        = string
-    description = "The engine version to use."
+    description = "La version du moteur de base de données à utiliser."
     sensitive   = false
 }
 
 variable "aws_rds_iam_database_authentication_enabled" {
     type        = bool
-    description = "Specifies whether or mappings of AWS Identity and Access Management (IAM) accounts to database accounts is enabled."
+    description = "Indique si l'option d'authentification avec AWS Identity and Access Management (IAM) est activée."
     sensitive   = false
 }
 
 variable "aws_rds_instance_class" {
     type        = string
-    description = "The instance type of the RDS instance."
+    description = "Le type d'instance du RDS."
     sensitive   = false
 }
 
 variable "aws_rds_monitoring_interval" {
     type        = number
-    description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB instance."
+    description = "L'intervalle, en seconds, entre les moments de la collecte de métriques (Enhanced Monitoring) pour l'instance de base de données."
     sensitive   = false
 }
 
 variable "aws_rds_multi_az" {
     type        = string
-    description = "Specifies if the RDS instance is multi-AZ."
+    description = "Indique si l'instance RDS est multi-AZ."
     sensitive   = false
 }
 
 variable "aws_rds_database_name" {
     type        = string
-    description = "The name of the database to create when the DB instance is created."
+    description = "Le nom de la base de données à créer pour l'instance DB."
     sensitive   = false
 }
 
 variable "aws_rds_performance_insights_enabled" {
   type        = bool
-  description = "Specifies whether Performance Insights are enabled. "
+  description = "Indique si Performance Insights est activé. "
   sensitive   = false
 }
 
 variable "aws_rds_port" {
     type        = number
-    description = "The port on which the DB accepts connections."
+    description = "Le port de connection à la base de données."
     sensitive   = false
 }
 
 variable "aws_rds_publicly_accessible" {
   type        = bool
-  description = "Bool to control if instance is publicly accessible."
+  description = "Indique si l'instance est accessible publiquement."
   sensitive   = false
 }
 
 variable "aws_rds_skip_final_snapshot" {
     type        = bool
-    description = "Skip final snapshot"
+    description = "Indique si le snapshot final est sauté"
     sensitive   = false
 }
 
 variable "aws_rds_storage_encrypted" {
     type        = bool
-    description = "Encrypter le stockage"
+    description = "Indique si le stockage est crypté"
     sensitive   = false
 }
 
 variable "aws_rds_storage_type" {
     type        = string
-    description = "One of \"standard\" (magnetic), \"gp2\" (general purpose SSD), or \"io1\" (provisioned IOPS SSD). The default is \"io1\" if iops is specified, \"gp2\" if not."
+    description = "Un de \"standard\" (magnetic), \"gp2\" (general purpose SSD), ou \"io1\" (provisioned IOPS SSD). Par défaut c'est \"io1\" si iops est specifié, \"gp2\" si non."
     sensitive   = false
 }
 
 variable "aws_rds_vpc_security_group_ids" {
     type        = list(string)
-    description = "List of VPC security groups to associate."
+    description = "Liste d'IDs des groups de sécurité du VPC qui seront associés."
     sensitive   = false
 }
 
 variable "aws_rds_db_username" {
     type = string
-    description = "RDS Database Username"
+    description = "Le nom de l'utilisateur de la base de données RDS"
 }
