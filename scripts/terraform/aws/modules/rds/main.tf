@@ -21,11 +21,11 @@ resource "random_password" "db_password"{
 }
 
 resource "aws_secretsmanager_secret" "rds_secret" {
-  name = "${local.name}-rds-secret"
+  name = "${local.name}-rds-secret-2"
 }
 
 resource "aws_secretsmanager_secret_version" "rds_secret" {
-  secret_id = "${local.name}-rds-secret"
+  secret_id = aws_secretsmanager_secret.rds_secret.id
   secret_string = <<EOF
   {
   "DB_PASSWORD": "${random_password.db_password.result}",

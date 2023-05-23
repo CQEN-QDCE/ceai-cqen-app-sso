@@ -11,21 +11,21 @@ output "db_name" {
 }
 
 output "db_user_secret" {
-    value = "${aws_secretsmanager_secret.rds_secret.arn}:DB_USER::"
+    value = "${aws_secretsmanager_secret.rds_secret.arn}:DB_USERNAME::"
     description = "Référence vers le secret contenant le nom d'usager administrateur de la base de donnée MySQL"
 }
 
 output "db_password_secret" {
-    value = "${aws_secretsmanager_secret.rds_secret.arn}:DB_PASS::"
+    value = "${aws_secretsmanager_secret.rds_secret.arn}:DB_PASSWORD::"
     description = "Référence vers le secret contenant le mot de passe administrateur de la base de donnée MySQL"
 }
 
-output "aws_rds_arn" {
+output "rds_arn" {
     value = aws_db_instance.rds.arn
     description = "L'ARN du cluster Postgres dans RDS."
 }
 
-output "aws_rds_id" {
+output "rds_id" {
     value = aws_db_instance.rds.id
     description = "Id du cluster Postgres dans RDS"
 }

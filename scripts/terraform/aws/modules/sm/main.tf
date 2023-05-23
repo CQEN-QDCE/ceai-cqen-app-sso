@@ -12,15 +12,15 @@ resource "random_password" "app_password"{
 }
 
 resource "aws_secretsmanager_secret" "app_secret" {
-  name = "${local.name}-app-secret"
+  name = "${local.name}-app-secret-3"
 }
 
 resource "aws_secretsmanager_secret_version" "app_secret" {
-  secret_id = "${local.name}-app-secret"
+  secret_id = aws_secretsmanager_secret.app_secret.id
   secret_string = <<EOF
   {
-  "KEYCLOAK_ADMIN": "${var.app_admin_username}", 
-  "KEYCLOAK_ADMIN_PASSWORD": "${random_password.app_password.result}"
+  "APP_ADMIN_USER": "${var.app_admin_username}", 
+  "APP_ADMIN_PASSWORD": "${random_password.app_password.result}"
   }
 EOF
  depends_on = [ aws_secretsmanager_secret.app_secret ]

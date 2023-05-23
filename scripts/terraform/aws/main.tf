@@ -4,7 +4,7 @@ locals {
 }
 
 module "ceai_lib" {
-  source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=dev"
+  source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=sea-cicd-codebuild"
 }
 
 # network
@@ -64,12 +64,12 @@ module "sm" {
 }
 
 data "template_file" "container_task_def_tpl" {
-  template = file("${path.module}/tasks/keycloak_task_definition.tftpl")
+  template = file("${path.module}/tasks/keycloak_task_def.json.tftpl")
   vars = {
     aws_region           = var.aws_region
     container_name       = local.container_name
     app_image            = "${module.ecr.ecr_image_uri}:latest"
-    awslogs_group        = "/ecs/${local.name}-task"
+    awslogs_group        = "/ecs/${local.name}-app-task"
     container_port       = 8080
     db_vendor            = "postgres"
     db_addr              = module.rds.endpoint
@@ -77,13 +77,19 @@ data "template_file" "container_task_def_tpl" {
     app_host_name        = var.app_hostname
     app_admin_username   = module.sm.app_user_secret
     app_admin_password   = module.sm.app_password_secret
-    healthckeck_path     = "/healthcheck"
+    healthckeck_path     = "/auth/health"
     db_admin_username    = module.rds.db_user_secret
     db_admin_password    = module.rds.db_password_secret
   }
 }
 
-module "ecs_service" {
+module "cloudwatch" {
+  source = "./modules/cloudwatch"
+
+  identifier            = local.name  
+}
+
+module "sea_ecs_service" {
   source = "./.terraform/modules/ceai_lib/aws/sea-ecs-fargate-service"
   
   sea_network = module.sea_network
@@ -101,6 +107,41 @@ module "ecs_service" {
   task_maximum_count = 1
   ecs_cluster = module.ecs_cluster
   
-  task_healthcheck_path = "/healthcheck"
+  task_healthcheck_path = "/auth/health"
   task_healthcheck_protocol = "HTTP"
+}
+
+/*
+module "backup" {
+  source = "./.terraform/modules/ceai_lib/aws/sea-backup"
+
+  aws_profile            = var.aws_profile
+  identifier             = local.name
+  backup_rules           = var.backup_rules
+  backup_alarms_email    = var.backup_alarms_email
+  backup_ressources_arn  = [ module.rds.rds_arn ]  
+}*/
+
+module "sea_cicd_codebuild" {
+  source = "./.terraform/modules/ceai_lib/aws/sea-cicd-codebuild"
+
+  identifier = local.name
+  app_name = var.app_name
+  app_ecr_repository_name = module.ecr.ecr_name
+  app_ecs_container_name = local.container_name
+  account_id = var.account_id
+  github_repo_url = var.github_repo_url
+  app_buildspec_path = var.app_buildspec_path
+  github_repo_branch = var.github_repo_branch
+  app_path = var.app_path
+}
+
+module "sea_cicd_pipeline" {
+  source = "./.terraform/modules/ceai_lib/aws/sea-cicd-codepipeline"
+
+  identifier = local.name
+  aws_codecommit_repository_default_branch = module.sea_cicd_codebuild.aws_codecommit_repository_default_branch
+  aws_codecommit_repository_name = module.sea_cicd_codebuild.aws_codecommit_repository_name
+  ecs_cluster_name = module.ecs_cluster.cluster_name
+  ecs_service_name = module.sea_ecs_service.ecs_service_name
 }

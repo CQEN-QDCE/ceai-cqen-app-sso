@@ -57,12 +57,12 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_aws_rds_arn"></a> [aws\_rds\_arn](#output\_aws\_rds\_arn) | L'ARN du cluster Postgres dans RDS. |
-| <a name="output_aws_rds_id"></a> [aws\_rds\_id](#output\_aws\_rds\_id) | Id du cluster Postgres dans RDS |
 | <a name="output_db_name"></a> [db\_name](#output\_db\_name) | Le nom de la base de données RDS. |
 | <a name="output_db_password_secret"></a> [db\_password\_secret](#output\_db\_password\_secret) | Référence vers le secret contenant le mot de passe administrateur de la base de donnée MySQL |
 | <a name="output_db_user_secret"></a> [db\_user\_secret](#output\_db\_user\_secret) | Référence vers le secret contenant le nom d'usager administrateur de la base de donnée MySQL |
 | <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | L'adresse IP de l'instance principale du serveur. |
+| <a name="output_rds_arn"></a> [rds\_arn](#output\_rds\_arn) | L'ARN du cluster Postgres dans RDS. |
 | <a name="output_rds_db_deploy"></a> [rds\_db\_deploy](#output\_rds\_db\_deploy) | La ressource aws pour voir si l'instance mysql est bien déployée |
 | <a name="output_rds_db_pass"></a> [rds\_db\_pass](#output\_rds\_db\_pass) | Le mot de passe administrateur de la base de donnée MySQL |
+| <a name="output_rds_id"></a> [rds\_id](#output\_rds\_id) | Id du cluster Postgres dans RDS |
 <!-- END_TF_DOCS -->
