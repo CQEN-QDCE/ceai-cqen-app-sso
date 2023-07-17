@@ -1,0 +1,31 @@
+variable "identifier" {
+  description = "Nom unique pour identifier les ressources AWS"
+  type = string
+}
+
+variable "aws_api_gateway_subnet_ids" {
+    type        = list(string)
+    description = "La liste des IDs des subnets web du VPC."
+    sensitive   = false
+}
+
+variable "aws_api_gateway_security_group_ids" {
+    type        = list(string)
+    description = "Liste d'IDs des groups de sécurité du VPC qui seront associés."
+    sensitive   = false
+}
+
+variable "aws_api_gateway_integration_alb_arn" {
+    type        = string
+    description = "L'ARN du load balancer de l'application"
+}
+
+variable "aws_api_route53_zone_id" {
+  type = string
+  description = "ID de la zone hebergé de la Route53."
+} 
+
+variable "aws_cert_domain_name" {
+  type = string
+  description = "Nom du domain du certificat."  
+}

@@ -3,6 +3,10 @@ locals {
   container_name = "${var.app_name}-container"
 }
 
+###################
+# ceai-lib
+###################
+
 module "ceai_lib" {
   source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=sea-cicd-codebuild"
 }
@@ -14,6 +18,10 @@ module "sea_network" {
   aws_profile = var.aws_profile
   workload_account_type = var.workload_account_type  
 }
+
+###################
+# BD
+###################
 
 # Configure the Amazon Relational Database Service (Amazon RDS) module
 module "rds" {
@@ -56,6 +64,10 @@ module "ecs_cluster" {
   identifier = local.name
 }
 
+###################
+# Secrets Manager
+###################
+
 module "sm" {
   source = "./modules/sm"
 
@@ -75,6 +87,7 @@ data "template_file" "container_task_def_tpl" {
     db_addr              = module.rds.endpoint
     db_name              = var.app_name
     app_host_name        = var.app_hostname
+    scheme               = var.scheme
     app_admin_username   = module.sm.app_user_secret
     app_admin_password   = module.sm.app_password_secret
     healthckeck_path     = "/auth/health"
@@ -86,7 +99,7 @@ data "template_file" "container_task_def_tpl" {
 module "cloudwatch" {
   source = "./modules/cloudwatch"
 
-  identifier            = local.name  
+  identifier            = local.name
 }
 
 module "sea_ecs_service" {
@@ -94,6 +107,8 @@ module "sea_ecs_service" {
   
   sea_network = module.sea_network
   identifier  = local.name
+  internal_endpoint_port = 80
+  internal_endpoint_protocol = "HTTP"
   #ecs_cluster_id = module.ecs_cluster.cluster_id
   task_definition = data.template_file.container_task_def_tpl.rendered
   task_container_name = local.container_name
@@ -122,22 +137,40 @@ module "backup" {
   backup_ressources_arn  = [ module.rds.rds_arn ]  
 }*/
 
+###################
+# API Gateway
+###################
+
+module "api_gateway" {
+  source = "./modules/api-gateway"
+
+  identifier                                      = local.name
+  aws_api_gateway_subnet_ids                      = module.sea_network.web_subnets.ids
+  aws_api_gateway_security_group_ids              = [module.sea_network.web_security_group.id]
+  aws_api_gateway_integration_alb_arn             = module.sea_ecs_service.alb_arn
+  aws_api_route53_zone_id                         = var.app_route53_zone_id  
+  aws_cert_domain_name                             = var.app_hostname
+}
+
+############################
+# AWS Code Build, Pipeline
+############################
+
 module "sea_cicd_codebuild" {
   source = "./.terraform/modules/ceai_lib/aws/sea-cicd-codebuild"
 
   identifier = local.name
+  app_buildspec_path = var.app_buildspec_path  
+  app_ecs_container_name = local.container_name  
+  app_ecr_repository_name = module.ecr.ecr_name  
   app_name = var.app_name
-  app_ecr_repository_name = module.ecr.ecr_name
-  app_ecs_container_name = local.container_name
-  account_id = var.account_id
+  app_path = var.app_path  
   github_repo_url = var.github_repo_url
-  app_buildspec_path = var.app_buildspec_path
-  github_repo_branch = var.github_repo_branch
-  app_path = var.app_path
+  github_repo_branch = var.github_repo_branch  
 }
 
 module "sea_cicd_pipeline" {
-  source = "./.terraform/modules/ceai_lib/aws/sea-cicd-codepipeline"
+  source = "./modules/codepipeline"
 
   identifier = local.name
   aws_codecommit_repository_default_branch = module.sea_cicd_codebuild.aws_codecommit_repository_default_branch

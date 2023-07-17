@@ -47,10 +47,18 @@
           "name": "KC_HOSTNAME",     
           "value": "${app_host_name}"     
         },
+        {
+          "name": "KC_HOSTNAME_ADMIN_URL",
+          "value": "${scheme}://${app_host_name}"
+        },
         { 
            "name": "KC_HTTP_ENABLED",
            "value": "true"
-        } 
+        },
+        {    
+          "name": "KC_LOG_LEVEL",     
+          "value": "ERROR"     
+        }        
       ],
       "secrets": [   
         {

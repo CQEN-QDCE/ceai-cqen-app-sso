@@ -34,15 +34,16 @@ variable "app_hostname" {
   description = "Nom du host de l'application."
 }
 
-variable "account_id" {
+variable "scheme" {
   type = string
-  description = "AWS account ID."
+  description = "Scheme pour l'URL de l'application. [https, http]"
 }
+
 variable "github_repo_url" {
   type = string
   description = "URL du repo GitHub de l'application."
 }
-  
+
 variable "github_repo_branch" {
   type = string
   description = "Branch du repo GitHub de l'application."  
@@ -57,3 +58,8 @@ variable "app_path" {
   type = string
   description = "Path de l'application dans le repo GitHub."
 }  
+
+variable "app_route53_zone_id" {
+  type = string
+  description = "ID de la zone hebergé de la Route53."
+} 

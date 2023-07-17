@@ -12,7 +12,7 @@ resource "random_password" "app_password"{
 }
 
 resource "aws_secretsmanager_secret" "app_secret" {
-  name = "${local.name}-app-secret-3"
+  name = "${local.name}-app-secret"
 }
 
 resource "aws_secretsmanager_secret_version" "app_secret" {

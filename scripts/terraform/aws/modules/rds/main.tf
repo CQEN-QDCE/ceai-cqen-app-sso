@@ -21,7 +21,7 @@ resource "random_password" "db_password"{
 }
 
 resource "aws_secretsmanager_secret" "rds_secret" {
-  name = "${local.name}-rds-secret-2"
+  name = "${local.name}-rds-secret"
 }
 
 resource "aws_secretsmanager_secret_version" "rds_secret" {
