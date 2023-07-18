@@ -88,7 +88,7 @@ resource "aws_apigatewayv2_api" "api_http_gateway" {
 resource "aws_apigatewayv2_stage" "staging" {
     api_id = aws_apigatewayv2_api.api_http_gateway.id
 
-    name = "staging"
+    name = "$default"
     auto_deploy = true  
 }
 
@@ -103,7 +103,7 @@ resource "aws_apigatewayv2_vpc_link" "api_vpc_link" {
 resource "aws_apigatewayv2_integration" "api_integration" {
   api_id = aws_apigatewayv2_api.api_http_gateway.id
 
-  integration_uri = var.aws_api_gateway_integration_alb_arn
+  integration_uri = var.aws_api_gateway_integration_alb_listener_arn
   integration_type = "HTTP_PROXY"
   integration_method = "ANY"
   connection_type = "VPC_LINK"
@@ -113,6 +113,6 @@ resource "aws_apigatewayv2_integration" "api_integration" {
 resource "aws_apigatewayv2_route" "api_route" {
     api_id = aws_apigatewayv2_api.api_http_gateway.id
 
-    route_key = "ANY /"
+    route_key = "ANY /{proxy+}"
     target = "integrations/${aws_apigatewayv2_integration.api_integration.id}"  
 }

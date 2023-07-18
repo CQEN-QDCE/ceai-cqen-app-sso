@@ -15,9 +15,9 @@ variable "aws_api_gateway_security_group_ids" {
     sensitive   = false
 }
 
-variable "aws_api_gateway_integration_alb_arn" {
+variable "aws_api_gateway_integration_alb_listener_arn" {
     type        = string
-    description = "L'ARN du load balancer de l'application"
+    description = "L'ARN du listener du load balancer de l'application"
 }
 
 variable "aws_api_route53_zone_id" {

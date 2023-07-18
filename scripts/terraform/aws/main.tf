@@ -107,7 +107,7 @@ module "sea_ecs_service" {
   
   sea_network = module.sea_network
   identifier  = local.name
-  internal_endpoint_port = 80
+  internal_endpoint_port = 8080
   internal_endpoint_protocol = "HTTP"
   #ecs_cluster_id = module.ecs_cluster.cluster_id
   task_definition = data.template_file.container_task_def_tpl.rendered
@@ -145,9 +145,9 @@ module "api_gateway" {
   source = "./modules/api-gateway"
 
   identifier                                      = local.name
-  aws_api_gateway_subnet_ids                      = module.sea_network.web_subnets.ids
+  aws_api_gateway_subnet_ids                      = [module.sea_network.web_subnet_a.id, module.sea_network.web_subnet_b.id]
   aws_api_gateway_security_group_ids              = [module.sea_network.web_security_group.id]
-  aws_api_gateway_integration_alb_arn             = module.sea_ecs_service.alb_arn
+  aws_api_gateway_integration_alb_listener_arn    = module.sea_ecs_service.alb_listener_arn
   aws_api_route53_zone_id                         = var.app_route53_zone_id  
   aws_cert_domain_name                             = var.app_hostname
 }
