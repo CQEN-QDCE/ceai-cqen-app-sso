@@ -126,7 +126,6 @@ module "sea_ecs_service" {
   task_healthcheck_protocol = "HTTP"
 }
 
-/*
 module "backup" {
   source = "./.terraform/modules/ceai_lib/aws/sea-backup"
 
@@ -134,8 +133,8 @@ module "backup" {
   identifier             = local.name
   backup_rules           = var.backup_rules
   backup_alarms_email    = var.backup_alarms_email
-  backup_ressources_arn  = [ module.rds.rds_arn ]  
-}*/
+  ressources_arn         = [ module.rds.rds_arn ]  
+}
 
 ###################
 # API Gateway

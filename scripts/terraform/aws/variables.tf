@@ -63,3 +63,24 @@ variable "app_route53_zone_id" {
   type = string
   description = "ID de la zone hebergé de la Route53."
 } 
+
+# ===================================================
+# Global variables for Backup
+# ---------------------------------------------------
+
+variable "backup_alarms_email" {
+    type = string
+    description = "The Delivers messages via SMTP. endpoint is an email address"
+}
+
+variable "backup_rules" {
+    type = list(object({
+      name                     = string
+      schedule                 = string
+      start_window             = number
+      completion_window        = number
+      delete_after             = number
+      enable_continuous_backup = bool
+    }))
+    description = "The rule object that specifies a scheduled task that is used to back up a selection of resources"
+}
