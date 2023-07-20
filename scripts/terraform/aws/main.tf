@@ -109,14 +109,13 @@ module "sea_ecs_service" {
   identifier  = local.name
   internal_endpoint_port = 8080
   internal_endpoint_protocol = "HTTP"
-  #ecs_cluster_id = module.ecs_cluster.cluster_id
+
   task_definition = data.template_file.container_task_def_tpl.rendered
   task_container_name = local.container_name
   task_port = 8080
   task_protocol = "HTTP"
   task_vcpu = 1024
   task_memory = 2048
-  #task_count = 1
   
   task_minimum_count = 1
   task_maximum_count = 1
