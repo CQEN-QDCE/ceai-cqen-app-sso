@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "pipeline_role_policy_attach" {
 }
 
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "${local.name}-codepipeline-bucket1"
+  bucket = "${local.name}-codepipeline-bucket"
 }
 
 resource "aws_codepipeline" "codepipeline" {
