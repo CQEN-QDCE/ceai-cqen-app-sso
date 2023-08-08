@@ -47,7 +47,7 @@ resource "aws_api_gateway_domain_name" "api_domain" {
  regional_certificate_arn = aws_acm_certificate.api_domain_cert.arn
  security_policy          = "TLS_1_2"
   endpoint_configuration {
-    types = ["REGIONAL"]
+    types = ["PRIVATE"]
   }
 
   depends_on = [ aws_acm_certificate_validation.api_acm_cert_validation ]
