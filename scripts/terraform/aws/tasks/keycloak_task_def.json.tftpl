@@ -6,8 +6,9 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "${awslogs_group}",
+          "awslogs-group": "${logs_group_name}",
           "awslogs-region": "${aws_region}",
+          "awslogs-create-group": "true",
           "awslogs-stream-prefix": "ecs"
         }
       },

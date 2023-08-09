@@ -8,7 +8,7 @@ locals {
 ###################
 
 module "ceai_lib" {
-  source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=sea-cicd-codebuild"
+  source = "github.com/CQEN-QDCE/ceai-cqen-terraform-lib?ref=dev"
 }
 
 # network
@@ -86,6 +86,7 @@ data "template_file" "container_task_def_tpl" {
     db_vendor            = "postgres"
     db_addr              = module.rds.endpoint
     db_name              = var.app_name
+    logs_group_name      = "${local.name}-lg"
     app_host_name        = var.app_hostname
     scheme               = var.scheme
     app_admin_username   = module.sm.app_user_secret
@@ -95,19 +96,19 @@ data "template_file" "container_task_def_tpl" {
     db_admin_password    = module.rds.db_password_secret
   }
 }
-
+/*
 module "cloudwatch" {
   source = "./modules/cloudwatch"
 
   identifier            = local.name
-}
+}*/
 
 module "sea_ecs_service" {
   source = "./.terraform/modules/ceai_lib/aws/sea-ecs-fargate-service"
   
   sea_network = module.sea_network
   identifier  = local.name
-  internal_endpoint_port = 8080
+  internal_endpoint_port = 80
   internal_endpoint_protocol = "HTTP"
 
   task_definition = data.template_file.container_task_def_tpl.rendered
@@ -143,6 +144,7 @@ module "api_gateway" {
   source = "./modules/api-gateway"
 
   identifier                                      = local.name
+  depends_on                                      = [ module.sea_ecs_service ]
   aws_api_gateway_subnet_ids                      = [module.sea_network.web_subnet_a.id, module.sea_network.web_subnet_b.id]
   aws_api_gateway_security_group_ids              = [module.sea_network.web_security_group.id]
   aws_api_gateway_integration_alb_listener_arn    = module.sea_ecs_service.alb_listener_arn
@@ -171,6 +173,7 @@ module "sea_cicd_pipeline" {
   source = "./modules/codepipeline"
 
   identifier = local.name
+  depends_on = [ module.sea_cicd_codebuild ]
   aws_codecommit_repository_default_branch = module.sea_cicd_codebuild.aws_codecommit_repository_default_branch
   aws_codecommit_repository_name = module.sea_cicd_codebuild.aws_codecommit_repository_name
   ecs_cluster_name = module.ecs_cluster.cluster_name
