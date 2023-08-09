@@ -96,12 +96,6 @@ data "template_file" "container_task_def_tpl" {
     db_admin_password    = module.rds.db_password_secret
   }
 }
-/*
-module "cloudwatch" {
-  source = "./modules/cloudwatch"
-
-  identifier            = local.name
-}*/
 
 module "sea_ecs_service" {
   source = "./.terraform/modules/ceai_lib/aws/sea-ecs-fargate-service"
