@@ -1,0 +1,42 @@
+# General
+aws_profile           = ""
+aws_region            = "ca-central-1"
+workload_account_type = "Dev"
+system                = "sso"
+environment           = "dev"
+app_name              = "keycloak"
+app_hostname          = "keycloak.dev.cqen.ca"
+scheme                = "https"
+
+github_repo_url       = ""
+app_buildspec_path    = "/path/to/keycloak-repo/aws-codebuild-buildscpec.yml"
+github_repo_branch    = "dev"
+app_path              = "/path/to/keycloak-repo"
+app_route53_zone_id   = ""
+
+backup_alarms_email   = ""
+backup_rules         = [{
+  name                                    = "daily_snapshot"
+  schedule                                = "cron(40 6 ? * MON-SAT *)"
+  start_window                            = 60
+  completion_window                       = 180
+  delete_after                            = 7
+  enable_continuous_backup                = true
+  },
+  {
+    name                                  = "weekly_snapshot"
+    schedule                              = "cron(40 16 ? * 1 *)"
+    start_window                          = 60
+    completion_window                     = 180
+    delete_after                          = 30
+    enable_continuous_backup              = false
+  },
+  {
+    name                                  = "monthly_snapshot"
+    schedule                              = "cron(0 5 1 * ? *)"
+    start_window                          = 60
+    completion_window                     = 180
+    delete_after                          = 365
+    enable_continuous_backup              = false
+  }
+]

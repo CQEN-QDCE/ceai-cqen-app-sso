@@ -1,0 +1,36 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Effect": "Allow",
+            "Condition": {
+                "StringEqualsIfExists": {
+                    "iam:PassedToService": [
+                        "ec2.amazonaws.com",
+                        "ecs-tasks.amazonaws.com"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "codecommit:UploadArchive",
+                "codecommit:GetCommit",
+                "codecommit:GetUploadArchiveStatus",
+                "s3:*",
+                "codecommit:GetRepository",
+                "codecommit:GetBranch",
+                "ecr:DescribeImages",
+                "ecs:*",
+                "codecommit:CancelUploadArchive"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
