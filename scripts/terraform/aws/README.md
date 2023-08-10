@@ -15,8 +15,7 @@ No requirements.
 |------|--------|---------|
 | <a name="module_api_gateway"></a> [api\_gateway](#module\_api\_gateway) | ./modules/api-gateway | n/a |
 | <a name="module_backup"></a> [backup](#module\_backup) | ./.terraform/modules/ceai_lib/aws/sea-backup | n/a |
-| <a name="module_ceai_lib"></a> [ceai\_lib](#module\_ceai\_lib) | github.com/CQEN-QDCE/ceai-cqen-terraform-lib | sea-cicd-codebuild |
-| <a name="module_cloudwatch"></a> [cloudwatch](#module\_cloudwatch) | ./modules/cloudwatch | n/a |
+| <a name="module_ceai_lib"></a> [ceai\_lib](#module\_ceai\_lib) | github.com/CQEN-QDCE/ceai-cqen-terraform-lib | dev |
 | <a name="module_ecr"></a> [ecr](#module\_ecr) | ./modules/ecr | n/a |
 | <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | ./.terraform/modules/ceai_lib/aws/sea-ecs-cluster | n/a |
 | <a name="module_rds"></a> [rds](#module\_rds) | ./modules/rds | n/a |
